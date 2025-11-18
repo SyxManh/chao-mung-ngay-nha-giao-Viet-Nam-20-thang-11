@@ -8,15 +8,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
-        /* ========================================================== */
-        /* CSS NÂNG CẤP (Responsive và Thẩm mỹ cao) */
-        /* ========================================================== */
+        /* CSS Responsive và Thẩm mỹ cao (Giữ nguyên phần này) */
         :root {
-            --color-primary: #8e24aa; /* Tím đậm */
-            --color-secondary: #ffb300; /* Vàng đậm */
+            --color-primary: #8e24aa; 
+            --color-secondary: #ffb300; 
             --color-text: #333;
-            --bg-light: #fbe6ff; /* Hồng tím nhạt */
-            --bg-dark: #e8d5f1; /* Tím nhạt hơn */
+            --bg-light: #fbe6ff; 
+            --bg-dark: #e8d5f1; 
             --font-title: 'Dancing Script', cursive;
             --font-body: 'Merriweather', serif;
         }
@@ -36,9 +34,6 @@
             padding: 20px 10px;
         }
 
-        /* ------------------------------------------- */
-        /* 1. MÀN HÌNH KHỞI ĐẦU */
-        /* ------------------------------------------- */
         #initial-screen {
             display: flex;
             flex-direction: column;
@@ -75,9 +70,6 @@
             100% { transform: scale(1); opacity: 1; }
         }
 
-        /* ------------------------------------------- */
-        /* 2. NỘI DUNG CHÍNH */
-        /* ------------------------------------------- */
         #main-content {
             display: none;
             opacity: 0;
@@ -113,7 +105,7 @@
             overflow: hidden;
         }
 
-        /* ✅ FIX LỖI: object-fit: contain; để ảnh/video vừa vặn không bị cắt */
+        /* FIX: object-fit: contain; để ảnh/video vừa vặn không bị cắt */
         #photo-display, #video-display {
             position: absolute;
             top: 0;
@@ -121,7 +113,7 @@
             width: 100%;
             height: 100%;
             object-fit: contain; 
-            background-color: #f0f0f0; /* Màu nền cho phần trống */
+            background-color: #f0f0f0; 
             opacity: 1;
             transition: opacity 1s ease-in-out;
         }
@@ -142,9 +134,7 @@
             line-height: 1.6;
         }
         
-        /* ------------------------------------------- */
         /* MEDIA QUERY (Tối ưu cho Điện thoại) */
-        /* ------------------------------------------- */
         @media (max-width: 600px) {
             .header-text {
                 font-size: 8.5vmin; 
@@ -159,7 +149,7 @@
 <body>
 
     <audio id="background-music" loop>
-        <source src="NGƯỜI GIEO MẦM XANH - HỨA KIM TUYỀN x HOÀNG DŨNG (OFFICIAL MV) [sj_UDyfoo-A].mp3" type="audio/mpeg"> 
+        <source src="nhac2011.mp3" type="audio/mpeg"> 
     </audio>
 
     <div id="initial-screen">
@@ -186,13 +176,14 @@
             {
                 header: "💐 LỜI CHÚC TỪ TÂM 💐",
                 image: "20.11.jpg", 
-                video:"NGƯỜI GIEO MẦM XANH - HỨA KIM TUYỀN x HOÀNG DŨNG (OFFICIAL MV).mp4.mp4",
+                // ✅ FIX TÊN FILE VIDEO
+                video: "video2011.mp4", // ĐỔI TÊN FILE VIDEO CỦA BẠN THÀNH video2011.mp4
                 message: "Kính chúc thầy cô thật nhiều sức khỏe, hạnh phúc và luôn giữ vững niềm đam mê, nhiệt huyết với sự nghiệp 'trồng người' cao quý. \nXin tri ân công lao to lớn của thầy cô."
             },
             {
                 header: "🌹 NGƯỜI LÁI ĐÒ TẬN TỤY 🌹",
                 image: "unnamed (1).jpg", 
-                video: "", // Thay bằng tên file video nếu muốn
+                video: "", 
                 message: "Xin cảm ơn những bài giảng sâu sắc, những lời khuyên chân thành và sự tận tâm không mệt mỏi đã dìu dắt chúng em nên người. Công ơn này mãi mãi khắc ghi."
             },
             {
@@ -312,8 +303,4 @@
         
     </script>
 </body>
-
 </html>
-
-
-
