@@ -217,31 +217,33 @@
         // JAVASCRIPT LOGIC
         
         const contentData = [
-            // ✅ SLIDE VIDEO (INDEX 0) - ĐÃ CẬP NHẬT 6 LỜI CHÚC MỚI TỪ BẠN
+            // SLIDE 1: ẢNH (2011.jpg)
             {
-                header: "LỜI CẢM ƠN SÂU SẮC💖",
-                image: "2011.jpg", 
-               
+                header: "LỜI CẢM ƠN SÂU SẮC💖.",
+                image: "2011.jpg",
+                video: "", 
                 messages: ["Tập thể Ban chấp hành Đoàn cơ sở khoa Công nghệ xin cảm ơn và gửi lời tri ân sâu sắc nhất đến tập thể CBGV-NV và thầy cô giáo đang giảng dạy tại trường Đại học Kiến Trúc Đà Nẵng"],
             },
+            
+            // SLIDE 2: VIDEO (VIDEO2.mp4)
             {
                 header: "LỜI TRI ÂN SÂU SẮC 💐",
-                video: "VIDEO2.mp4", 
+                video: "VIDEO2.mp4",
+                image: "", 
                 messages: [
-                    "Kính chúc Thầy Cô luôn có thật nhiều 🧡 **sức khỏe**, hạnh phúc và luôn giữ vững niềm đam mê, nhiệt huyết với sự nghiệp 'trồng người' cao quý.",
+                    "Kính chúc Thầy Cô luôn có thật nhiều 🧡 sức khỏe, hạnh phúc và luôn giữ vững niềm đam mê, nhiệt huyết với sự nghiệp 'trồng người' cao quý.",
                     "Khoảng thời gian được học tập dưới sự dẫn dắt của Thầy Cô là những năm tháng tươi đẹp nhất của chúng em. Kính chúc Thầy Cô mọi điều tốt lành, và mong rằng những thế hệ học trò sau này cũng sẽ yêu quý Thầy Cô như chúng em. ✨",
                     "Có lẽ chúng em sẽ không thể nhớ hết mọi công thức hay định luật, nhưng chúng em sẽ mãi mãi nhớ về tấm lòng, nụ cười và sự kiên nhẫn của Thầy Cô. Thật may mắn khi có Thầy Cô trong đời. 💖",
                     "Thầy Cô ơi, Thầy Cô như người lái đò thầm lặng đưa biết bao thế hệ sinh viên cập bến bờ tri thức. Chúng em xin chúc Thầy Cô có một ngày 20/11 thật ý nghĩa, ấm áp và hạnh phúc bên gia đình và các thế hệ học trò. ⛵",
                     "Nhân ngày Nhà giáo Việt Nam 20/11, thay mặt cho toàn thể Sinh viên tại Đoàn cơ sở Khoa Công nghệ, chúng em xin gửi đến Thầy Cô lòng biết ơn chân thành nhất. Thầy Cô mãi là ngọn hải đăng soi sáng con đường tri thức cho chúng em. 💡",
-                    "Kính chúc Thầy Cô sức khỏe, hạnh phúc và tiếp tục gặt hái nhiều thành công trong sự nghiệp trồng người cao quý này. Chúng em luôn ghi nhớ công lao to lớn mà Thầy Cô đã tận tụy, tâm huyết gửi gắm đến chúng em trong những năm tháng Đại học. 🙏"
+                    "Kính chúc Thầy Cô sức khỏe, hạnh phúc và tiếp tục gặt hái nhiều thành công trong sự nghiệp trồng người cao quý này. Chúng em luôn ghi nhớ công lao to lớn mà Thầy Cô đã tận tụy, tâm huyết gửi gắm đến chúng em trong những năm tháng Đại học. "
                 ],
-                image: "" 
             },
             
-            // SLIDE CUỐI CÙNG (INDEX 1)
+            // SLIDE 3: ẢNH CUỐI CÙNG (unnamed (1).jpg)
             {
                 header: "TRI ÂN SÂU SẮC 💖",
-                image: "unnamed (1).jpg", 
+                image: "unnamed (1).jpg",
                 video: "", 
                 messages: ["Chúc thầy cô có một ngày 20/11 thật ấm áp, trọn vẹn và ý nghĩa bên gia đình, đồng nghiệp và tất cả các thế hệ học trò thân yêu. 🎁"],
             }
@@ -336,7 +338,7 @@
             type();
         }
 
-        // --- Hàm Hiển thị Slide (Logic Dừng Đã Hoàn Thiện) ---
+        // --- Hàm Hiển thị Slide (ĐÃ FIX HIỂN THỊ CHẬM) ---
         function showSlide(index) {
             
             if (index >= contentData.length) {
@@ -373,10 +375,25 @@
                     photoDisplay.style.display = 'none';
                     
                     videoDisplay.load();
+                    
+                    // 🎯 Đảm bảo video tải dữ liệu xong và hiện lên mờ dần (fade in) trước khi gõ chữ
                     videoDisplay.onloadeddata = () => {
                         videoDisplay.muted = true;
                         videoDisplay.play().catch(e => console.log("Video play blocked:", e));
+                        // ✅ Đặt opacity=1 TẠI ĐÂY để nó hiện lên ngay khi tải xong
                         videoDisplay.style.opacity = 1; 
+                        
+                        // Bắt đầu gõ chữ ngay sau khi video hiện
+                        runMessagesSequentially(slide.messages, 0, () => {
+                            // Chuyển slide (nếu chưa phải slide cuối) khi cả tin nhắn và video đã xong
+                            if (videoEnded && !isLastSlide) {
+                                slideInterval = setTimeout(nextSlide, 1000);
+                            } else if (videoEnded && isLastSlide) {
+                                // Slide cuối (có video) + mọi thứ xong -> DỪNG
+                                backgroundMusic.pause();
+                                backgroundMusic.currentTime = 0;
+                            }
+                        });
                     };
                     
                     // Xử lý khi video kết thúc
@@ -394,40 +411,37 @@
                         }
                     };
                     
-                    // Chạy tin nhắn tuần tự
-                    runMessagesSequentially(slide.messages, 0, () => {
-                        
-                        if (videoEnded) {
-                            if (!isLastSlide) {
-                                slideInterval = setTimeout(nextSlide, 1000);
-                            } else {
-                                // Slide cuối (có video) + mọi thứ xong -> DỪNG
-                                backgroundMusic.pause();
-                                backgroundMusic.currentTime = 0;
-                            }
-                        }
-                    });
-                    
                 } else {
                     // HIỂN THỊ ẢNH
                     videoDisplay.style.display = 'none';
                     photoDisplay.style.display = 'block';
                     photoDisplay.src = slide.image; 
-                    photoDisplay.onload = () => {
+
+                    // Hàm chạy khi ảnh tải xong
+                    const handleImageLoad = () => {
+                        // ✅ Đặt opacity=1 TẠI ĐÂY để nó hiện lên ngay khi tải xong
                         photoDisplay.style.opacity = 1; 
+                        
+                        // Sau khi ảnh hiện, bắt đầu gõ chữ
+                        runMessagesSequentially(slide.messages, 0, () => {
+                            // Chỉ set interval nếu KHÔNG phải slide cuối
+                            if (!isLastSlide) {
+                                slideInterval = setTimeout(nextSlide, delayBetweenSlides);
+                            } else {
+                                // NẾU ĐÂY LÀ SLIDE CUỐI CÙNG (CHỈ CÓ ẢNH), DỪNG NHẠC VÀ ĐỨNG YÊN
+                                backgroundMusic.pause();
+                                backgroundMusic.currentTime = 0;
+                            }
+                        });
                     };
+
+                    // 🎯 KẾT HỢP KIỂM TRA ONLOAD VÀ CACHE
+                    photoDisplay.onload = handleImageLoad;
                     
-                    // Chạy tin nhắn tuần tự và hẹn giờ chuyển slide
-                    runMessagesSequentially(slide.messages, 0, () => {
-                        // Chỉ set interval nếu KHÔNG phải slide cuối
-                        if (!isLastSlide) {
-                            slideInterval = setTimeout(nextSlide, delayBetweenSlides);
-                        } else {
-                            // NẾU ĐÂY LÀ SLIDE CUỐI CÙNG (CHỈ CÓ ẢNH), DỪNG NHẠC VÀ ĐỨNG YÊN
-                            backgroundMusic.pause();
-                            backgroundMusic.currentTime = 0;
-                        }
-                    });
+                    // Nếu ảnh đã được cache (tải rất nhanh), onload không gọi. Kiểm tra và gọi thủ công:
+                    if (photoDisplay.complete && photoDisplay.naturalWidth !== 0) {
+                        handleImageLoad();
+                    }
                 }
             }, 500); 
         }
@@ -461,8 +475,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
